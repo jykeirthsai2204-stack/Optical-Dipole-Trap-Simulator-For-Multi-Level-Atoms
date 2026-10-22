@@ -1,10 +1,6 @@
-import sys
 import numpy as np
 import pyqtgraph as pg
-from PyQt6.QtWidgets import QApplication, QMainWindow, QSlider, QVBoxLayout, QWidget, QLabel,QTabWidget,QHBoxLayout
-from PyQt6.QtCore import Qt
 from scipy import constants
-
 
 C = constants.c
 ħ= constants.hbar
@@ -49,5 +45,8 @@ def Power_calculator_function(τ1,τ2,freq_1,freq_2,Polarisation,gf,Mf,wavelengt
         term2 = (τ2*(2+(Polarisation*gf*Mf)))/((freq_2**3)*(Detuning2))
 
         return ((Trapt_depth*np.pi*(Beam_waist**2))/(2*constant*(term1+term2)))
+
+
+
 
 
