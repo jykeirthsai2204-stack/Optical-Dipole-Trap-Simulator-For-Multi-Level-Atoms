@@ -74,9 +74,9 @@ class AtomTrapApp(QMainWindow):
 
         rayeligh_range = (np.pi*(self.Beam_waist**2))/(self.wavelength_slider.value()*1e-9)
 
-        self.Propaxis_range = np.linspace(-3*rayeligh_range,3*rayeligh_range,4)
-        self.Transverse_range1 = np.linspace(-3*rayeligh_range,3*rayeligh_range,4)
-        self.Transverse_range2 = np.linspace(-limit, limit, 4)
+        self.Propaxis_range = np.linspace(-limit, limit, 100)
+        self.Transverse_range1 = np.linspace(-limit, limit, 100)
+        self.Transverse_range2 = np.linspace(-limit, limit, 100)
 
         tabs.addTab(self.tab1,"Trap Depth")
         tabs.addTab(self.tab2,"Scattering Rate")
@@ -101,16 +101,16 @@ class AtomTrapApp(QMainWindow):
     def Crossed_beam_math(self,x,y,z,beam_waist,Wavelength,Power,laser_Polarisation,Mf1):
 
         X,Y = np.meshgrid(x,y)
-        print(f"X {X} X")
-        print(f"Y {Y} Y")
+        
         x_intensity = Intensity(beam_waist,Wavelength,Power,X,Y,0.0)
         y_intensity = Intensity(beam_waist,Wavelength,Power,Y,X,0.0)
-        print(f"intensity {x_intensity} intensity")
-        print(f"intensity {y_intensity} intensity")
+        
+              
+        
         
         Total_intensity = x_intensity + y_intensity
         Z_value= Crossed_Beam_TrapDepth(3.610e7,3.811e7,2.369e15,2.415e15,laser_Polarisation,laser_Polarisation,-0.5,Mf1,Wavelength,Total_intensity)
-        print(f"crossed trap depth {Z_value} crossed Trap depth")
+        
         
         return X,Y,Z_value
         
@@ -160,7 +160,7 @@ class AtomTrapApp(QMainWindow):
         Power = self.Power_slider.value()
         self.Power_slider_Lower_label.setText(f"{Power}mW")
 
-        _, _,Z_new= self.Crossed_beam_math(self.Propaxis_range,self.Transverse_range1,0,self.Beam_waist,Wavelength,Power,laser_Polarisation,Mf1)
+        _, _,Z_new= self.Crossed_beam_math(self.Propaxis_range,self.Transverse_range1,0,self.Beam_waist,Wavelength,Power*1e-3,laser_Polarisation,Mf1)
 
         z_max = np.max(Z_new)
         z_min = np.min(Z_new)
@@ -169,8 +169,8 @@ class AtomTrapApp(QMainWindow):
         else:
             colour_math = np.zeros_like(Z_new)
 
-        print(z_max)
-        print(z_min)
+        print(f"max = {z_max}")
+        print(f"min = {z_min}")
 
         surface_colours =pg.colormap.get('viridis').map(colour_math) 
 
